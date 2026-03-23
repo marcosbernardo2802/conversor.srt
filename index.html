@@ -138,8 +138,6 @@
     });
 </script>
 <!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
-<!-- ================= FIM DO CÓDIGO CAMALEÃO ================= -->
-
     
     <meta charset="UTF-8">
     <title>Conversor de Roteiro para SRT - Crônicas Estelares</title>
@@ -181,6 +179,27 @@
             --color-success: #218838;
         }
 
+        /* ESTILIZAÇÃO DA BARRA DE ROLAGEM (SCROLLBAR) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-bg);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-card-border);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-card-border) var(--color-bg);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -191,7 +210,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             min-height: 100vh;
         }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        .container { width: 95%; max-width: 100%; margin: 0 auto; padding: 2rem; }
         
         .floating-button {
             position: fixed; z-index: 1000; cursor: pointer;
@@ -245,6 +264,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 700;
+            font-size: 0.9rem;
         }
 
         textarea {
@@ -254,9 +274,9 @@
         }
         textarea:focus, textarea:focus-visible { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-shadow); }
         
-        .main-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .main-actions { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
         .main-actions button {
-            flex-grow: 1; padding: 12px; font-size: 1.1em; font-weight: 700; border-radius: 8px; border: none;
+            padding: 6px 16px; font-size: 0.65rem; font-weight: 600; border-radius: 6px; border: none;
             cursor: pointer; transition: all 0.3s ease; color: #fff;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
@@ -271,18 +291,48 @@
 
         .output-section { margin-top: 2rem; }
         .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .output-header h3 { margin: 0; padding-bottom: 0.5rem;}
+        .output-header h3 { margin: 0; padding-bottom: 0.5rem; font-size: 0.9rem; }
         
-        .output-actions { display: flex; gap: 10px; }
+        .output-actions { display: flex; gap: 8px; }
         .output-actions button {
             background-color: var(--color-success); color: #fff; border: none;
-            padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.9em;
-            font-weight: 700; transition: all 0.2s ease;
-            display: flex; align-items: center; gap: 8px;
+            padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 0.65rem;
+            font-weight: 600; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 6px;
         }
         .output-actions button:hover { opacity: 0.8; transform: scale(1.05); }
         .output-actions button.copied { background-color: var(--color-primary); }
         
+        /* ESTILOS DO MODAL DE CONFIRMAÇÃO */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            display: flex; opacity: 1;
+        }
+        .modal-content {
+            max-width: 400px; width: 90%; margin: 0; /* Sobrescreve a margem do app-card */
+            transform: translateY(20px); transition: transform 0.3s ease;
+            padding: 2rem; text-align: center;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-content h3 { margin-bottom: 1rem; font-size: 1.4rem; color: var(--color-text); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .modal-content p { margin-bottom: 1.5rem; opacity: 0.8; font-size: 0.95rem; }
+        .modal-actions { display: flex; gap: 1rem; justify-content: center; }
+        .modal-actions button {
+            padding: 8px 20px; font-size: 0.85rem; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; transition: all 0.2s ease;
+        }
+        .cancel-btn { background-color: transparent; border: 1px solid var(--color-card-border) !important; color: var(--color-text); }
+        .cancel-btn:hover { background-color: rgba(255,255,255,0.05); }
+        .light-theme .cancel-btn:hover { background-color: rgba(0,0,0,0.05); }
+        .confirm-btn { background-color: var(--color-secondary); color: #fff; }
+        .confirm-btn:hover { opacity: 0.9; transform: scale(1.05); }
+
         footer { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-card-border); color: #888; transition: border-color 0.3s ease; }
         .footer-wrapper { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
         .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 0.5rem; }
@@ -341,6 +391,18 @@
         </div>
     </main>
 
+    <!-- MODAL DE CONFIRMAÇÃO -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-content app-card">
+            <h3><i class="fas fa-exclamation-triangle" style="color: var(--color-secondary);"></i> Atenção</h3>
+            <p>Tem a certeza que deseja limpar todo o roteiro e o resultado? Esta ação não pode ser desfeita.</p>
+            <div class="modal-actions">
+                <button id="cancelClearBtn" class="cancel-btn">Cancelar</button>
+                <button id="confirmClearBtn" class="confirm-btn">Sim, Limpar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- RODAPÉ -->
     <footer>
         <div class="container footer-wrapper">
@@ -373,6 +435,11 @@
             const downloadBtn = document.getElementById('downloadBtn');
             const messageDiv = document.getElementById('message');
             const localStorageKey = 'srtScript';
+            
+            // Elementos do Modal
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmClearBtn = document.getElementById('confirmClearBtn');
+            const cancelClearBtn = document.getElementById('cancelClearBtn');
 
             const copyToClipboard = (text, button) => {
                 const textArea = document.createElement("textarea");
@@ -493,12 +560,31 @@
             convertBtn.addEventListener('click', convertToSrt);
             copyBtn.addEventListener('click', () => copyToClipboard(outputSrt.value, copyBtn));
             downloadBtn.addEventListener('click', () => downloadSrt(outputSrt.value));
+            
+            // Lógica do Modal de Limpeza
+            const openModal = () => { confirmModal.classList.add('show'); };
+            const closeModal = () => { confirmModal.classList.remove('show'); };
+
             clearBtn.addEventListener('click', () => {
+                // Se as caixas já estiverem vazias, nem abre o popup
+                if (scriptInput.value.trim() === '' && outputSrt.value.trim() === '') return;
+                openModal();
+            });
+
+            cancelClearBtn.addEventListener('click', closeModal);
+
+            confirmClearBtn.addEventListener('click', () => {
                 scriptInput.value = '';
                 outputSrt.value = '';
                 outputDiv.style.display = 'none';
                 localStorage.removeItem(localStorageKey);
                 showMessage('Limpo!', 'success');
+                closeModal();
+            });
+
+            // Fechar modal ao clicar fora da caixa
+            confirmModal.addEventListener('click', (e) => {
+                if (e.target === confirmModal) closeModal();
             });
 
             // Lógica do Tema
