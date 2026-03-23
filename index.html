@@ -210,7 +210,14 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             min-height: 100vh;
         }
-        .container { width: 95%; max-width: 100%; margin: 0 auto; padding: 2rem; }
+        
+        /* Forçando a largura para 95% e impedindo conflitos com o Tailwind do Portal */
+        .container { 
+            width: 100% !important; 
+            max-width: 95% !important; 
+            margin: 0 auto; 
+            padding: 2rem; 
+        }
         
         .floating-button {
             position: fixed; z-index: 1000; cursor: pointer;
